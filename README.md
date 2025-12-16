@@ -186,7 +186,7 @@ Each service has comprehensive documentation including testing instructions:
 - **[Node.js Ingestion README](node_data_ingestion/README.md)** - XML parsing with Jest tests
 - **[Python Ingestion README](kafka_data_ingestion/README.md)** - Kafka consumer with pytest suite
 
-## 🔧 Technical Implementation
+## Technical Implementation
 
 ### Multi-Language Architecture
 
