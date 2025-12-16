@@ -1,0 +1,26 @@
+# Environment variables (contains secrets)
+.env
+
+# Composer
+/vendor/
+composer.lock
+composer.phar
+
+# PHP
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+*.cache

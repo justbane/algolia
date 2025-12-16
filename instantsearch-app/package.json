@@ -1,0 +1,28 @@
+{
+  "name": "instantsearch-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "parcel index.html --port 3000",
+    "build": "parcel build index.html",
+    "lint": "eslint . && prettier --check .",
+    "lint:fix": "eslint . --fix && prettier --write ."
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^5.6.1",
+    "eslint": "8.15.0",
+    "eslint-config-algolia": "^21.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsdoc": "^61.5.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-promise": "^7.2.1",
+    "parcel": "2.0.1",
+    "prettier": "^3.0.0"
+  },
+  "dependencies": {
+    "algoliasearch": "4",
+    "instantsearch.js": "4.85.2"
+  }
+}

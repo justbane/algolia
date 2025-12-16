@@ -1,0 +1,146 @@
+﻿C O N F I D E N T I A L 
+TECHNICAL TEST 
+Solutions Architect 
+Systems integration 
+Your mission is to design a complex data integration solution that connects the following systems with Algolia. 
+1. A bespoke e-commerce website with a PHP backend and a SQL database: This website can only expose product IDs via an internal API endpoint that can only be accessed within the client's network. 
+Furthermore, this API can only return up to 1000 results per request and cannot be called more than 10 times a second for performance concerns. 
+2. A bespoke system with a Node JS backend and a MongoDB database: This system outputs an XML product catalog at a given secure URL. 
+This catalog contains all products available on the website and is pulled by the website every hour to update the information displayed. The only way for the website to get product information is by pulling the catalog and connecting each product via ID. 
+3. A Kafka topic: 
+This topic gets populated from a third-party tool, disconnected from the main website. 
+The messages include product parameter updates. 
+The updates in the topic are critical for keeping the XML product catalog up-to-date. However, not all parameters from the Kafka messages are pulled into the catalog.
+The queue has multiple consumer groups, concurrently listening to these messages to update other systems. 
+All of the above systems are production-only and the client has not mentioned development/staging environments. 
+The client has also reported some synchronization issues at times between the Kafka messages and the catalog. 
+As such, the catalog has to be considered the main source of truth in these events. 
+The main goal is to produce a unified and accurate product catalog to be indexed by Algolia. 
+Platform configuration 
+Before configuring your Algolia dashboard/account you will need to upload a data set. You can use the ‘Expected Algolia Payload’ (See notes at the end of this document) and write a script in your preferred language to do so. 
+With the data uploaded to Algolia, you will then have to configure your account to suit your client's needs best and show the most relevant results. 
+Furthermore, you should make sure you can visualise analytics metrics in the Algolia dashboard. 
+UI 
+After configuring Algolia you will have to build a demo UI, to be presented back to your client as a sample of how their new search could look like. 
+This should focus on Algolia's more prominent features and showcase your understanding of Algolia's service offering, whilst also being coherent and consistent with the client's vertical. 
+The demo has to be easily deployable/testable, as the client would like to receive this as a package to get tested and inspected by their development team. 
+Instructions and documentation would be an appreciated bonus. 
+  
+C O N F I D E N T I A L
+Deliverables before the next interview stage 
+1. A public repository with the data ingestion script, used to load the data in your Algolia account, and the UI code. 
+Preferably shared along with a CodeSandbox for ease of review and testing. 2. Provide us with Support access to your Algolia account 
+3. Answers to the client questions (see below) 
+Deliverables during the next interview stage 
+1. A presentation explaining your solution, reasoning and choices, including architecture diagrams. 
+2. UI code walkthrough and demo 
+3. Dashboard configuration walkthrough 
+Assessment Criteria 
+● The ability to design an efficient data integration solution. 
+● Problem-solving skills when dealing with various data sources and formats. ● Knowledge of relevant technologies and tools for data integration. 
+● Error-handling and logging strategies to ensure data reliability. 
+● Effective communication and presentation skills to explain and demonstrate the solution. 
+Useful links 
+● Algolia account creation 
+● Algolia documentation 
+  
+C O N F I D E N T I A L
+Client questions 
+Please answer the following questions in a professional manner, as if you were a Solutions Architect: 
+Question 1 
+From: marissa@startup.com 
+Subject: Bad design 
+Hello, 
+Sorry to give you the kind of feedback that I know you do not want to hear, but I really hate the new dashboard design. Clearing and deleting indexes are now several clicks away. I am needing to use these features while iterating, so this is inconvenient. 
+Thanks, 
+Marissa 
+Question 2 
+From: carrie@coffee.com 
+Subject: URGENT ISSUE WITH PRODUCTION!!!! 
+Since today 9:15am we have been seeing a lot of errors on our website. Multiple users have reported that they were unable to publish their feedbacks and that an alert box with "Record is too big, please contact enterprise@algolia.com". 
+Our website is an imdb like website where users can post reviews of coffee shops online. Along with that we enrich every record with a lot of metadata that is not for search. I am already a paying customer of your service, what else do you need to make your search work? 
+Please advise on how to fix this. Thanks. 
+  
+C O N F I D E N T I A L
+Question 3 
+From: marc@hotmail.com 
+Subject: Error on website 
+Hi, my website is not working and here's the error: 
+  
+Can you fix it please? 
+  
+C O N F I D E N T I A L
+Data samples 
+API response 
+Unset 
+[ 
+{ 
+"name": "3-Year Unlimited Cloud Storage Service Activation Card - Other", "objectID": "1696302" 
+}, 
+{ 
+"name": "360fly - Panoramic 360° HD Video Camera - Black", 
+"objectID": "9131042" 
+}, 
+{ 
+"name": "3DR - Backpack for Solo - Black", 
+"objectID": "5353024" 
+}, 
+{ 
+"name": "3DR - Propellers for 3DR Solo Drones (2-Pack) - Black", 
+"objectID": "5357011" 
+}, 
+] 
+  
+C O N F I D E N T I A L
+XML output 
+Unset 
+<?xml version="1.0" encoding="UTF-8" ?> 
+<root> 
+<row> 
+<name>3-Year Unlimited Cloud Storage Service Activation Card - Other</name> <description>Enjoy 3 years of unlimited Cloud...</description> 
+<brand>Pogoplug</brand> 
+<categories>Best Buy Gift Cards</categories> 
+<categories>Entertainment Gift Cards</categories> 
+<hierarchicalCategories> 
+<lvl0>Best Buy Gift Cards</lvl0> 
+<lvl1>Best Buy Gift Cards &gt; Entertainment Gift Cards</lvl1> 
+</hierarchicalCategories> 
+<price>70</price> 
+<image>https://cdn-demo.algolia.com/bestbuy/1696302_sc.jpg</image> 
+<objectID>1696302</objectID> 
+</row> 
+</root> 
+  
+C O N F I D E N T I A L
+Kafka message 
+Unset 
+[ 
+{ 
+"name": "3-Year Unlimited Cloud Storage Service Activation Card - 
+Other", 
+"description": "Enjoy 3 years of unlimited Cloud...", 
+"brand": "Pogoplug", 
+"categories": [ 
+"Best Buy Gift Cards", 
+"Entertainment Gift Cards" 
+], 
+"hierarchicalCategories": { 
+"lvl0": "Best Buy Gift Cards", 
+"lvl1": "Best Buy Gift Cards > Entertainment Gift Cards" 
+}, 
+"type": "Online data backup", 
+"price": 69, 
+"price_range": "50 - 100", 
+"image": "https://cdn-demo.algolia.com/bestbuy/1696302_sc.jpg", 
+"url": 
+"http://www.bestbuy.com/site/3-year-unlimited-cloud-storage-service-activation card-other/1696302.p?id=1219066776306&skuId=1696302&cmp=RMX&ky=1uWSHMdQqBeVJB9c XgEke60s5EjfS6M1W", 
+"free_shipping": true, 
+"popularity": 10000, 
+"rating": 2, 
+"objectID": "1696302" 
+} 
+] 
+Expected Algolia payload 
+See attached. 
+  
+C O N F I D E N T I A L

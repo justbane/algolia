@@ -1,0 +1,29 @@
+{
+    "name": "algolia/php-data-ingestion",
+    "description": "PHP service for ingesting data from PHP/SQL API to Algolia",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "algolia/algoliasearch-client-php": "^3.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "vlucas/phpdotenv": "^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Algolia\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "ingest": "php index.php",
+        "test": "phpunit --no-coverage",
+        "test:coverage": "phpunit --coverage-html coverage-html"
+    }
+}

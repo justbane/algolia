@@ -1,0 +1,33 @@
+{
+  "name": "algolia-node-data-ingestion",
+  "version": "1.0.0",
+  "description": "Node.js service for ingesting XML catalog data to Algolia",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "ingest": "node index.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [
+    "algolia",
+    "xml",
+    "ingestion",
+    "catalog"
+  ],
+  "author": "Solutions Architect",
+  "license": "ISC",
+  "dependencies": {
+    "algoliasearch": "^4.20.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "fast-xml-parser": "^4.3.2"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
