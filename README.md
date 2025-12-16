@@ -53,9 +53,7 @@ algolia/
     └── kafka message.json         # Sample Kafka messages
 ```
 
-## 🎯 Assignment Overview
-
-### The Challenge
+## Assignment Overview
 
 Design and implement a data integration solution that combines three systems:
 
