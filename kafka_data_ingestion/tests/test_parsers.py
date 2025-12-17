@@ -10,7 +10,7 @@ import os
 # Add parent directory to path to import parsers
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from parsers.kafka_parser import parse_kafka_messages, extract_kafka_only_fields
+from parsers.kafka_parser import parse_kafka_messages
 
 
 class TestKafkaParser:
@@ -110,105 +110,3 @@ class TestKafkaParser:
         """Test handling of missing file."""
         with pytest.raises(FileNotFoundError):
             parse_kafka_messages("/nonexistent/file.json")
-
-
-class TestExtractKafkaOnlyFields:
-    """Test suite for extracting Kafka-only enrichment fields."""
-
-    def test_extract_all_kafka_fields(self):
-        """Test extraction of all Kafka-only fields."""
-        kafka_data = {
-            "objectID": "123",
-            "name": "Product",
-            "type": "electronics",
-            "price_range": "$50-$100",
-            "url": "https://example.com/product",
-            "free_shipping": True,
-            "popularity": 500,
-            "rating": 4.5,
-            "description": "This is not Kafka-only"
-        }
-        
-        result = extract_kafka_only_fields(kafka_data)
-        
-        assert result['type'] == 'electronics'
-        assert result['price_range'] == '$50-$100'
-        assert result['url'] == 'https://example.com/product'
-        assert result['free_shipping'] is True
-        assert result['popularity'] == 500
-        assert result['rating'] == 4.5
-        
-        # Should not include non-Kafka fields
-        assert 'objectID' not in result
-        assert 'name' not in result
-        assert 'description' not in result
-
-    def test_extract_partial_kafka_fields(self):
-        """Test extraction when only some Kafka fields are present."""
-        kafka_data = {
-            "objectID": "123",
-            "rating": 4,
-            "free_shipping": False
-        }
-        
-        result = extract_kafka_only_fields(kafka_data)
-        
-        assert len(result) == 2
-        assert result['rating'] == 4
-        assert result['free_shipping'] is False
-
-    def test_extract_no_kafka_fields(self):
-        """Test extraction when no Kafka-only fields are present."""
-        kafka_data = {
-            "objectID": "123",
-            "name": "Product",
-            "price": 99
-        }
-        
-        result = extract_kafka_only_fields(kafka_data)
-        
-        assert isinstance(result, dict)
-        assert len(result) == 0
-
-    def test_extract_empty_data(self):
-        """Test extraction from empty data."""
-        result = extract_kafka_only_fields({})
-        
-        assert isinstance(result, dict)
-        assert len(result) == 0
-
-    def test_extract_preserves_data_types(self):
-        """Test that data types are preserved during extraction."""
-        kafka_data = {
-            "type": "electronics",
-            "price_range": "$50-$100",
-            "free_shipping": True,
-            "popularity": 500,
-            "rating": 4.5
-        }
-        
-        result = extract_kafka_only_fields(kafka_data)
-        
-        assert isinstance(result['type'], str)
-        assert isinstance(result['price_range'], str)
-        assert isinstance(result['free_shipping'], bool)
-        assert isinstance(result['popularity'], int)
-        assert isinstance(result['rating'], float)
-
-    def test_extract_with_null_values(self):
-        """Test extraction when Kafka fields have null values."""
-        kafka_data = {
-            "objectID": "123",
-            "type": None,
-            "rating": None,
-            "url": "https://example.com"
-        }
-        
-        result = extract_kafka_only_fields(kafka_data)
-        
-        # Should include fields even if they're None
-        assert 'type' in result
-        assert result['type'] is None
-        assert 'rating' in result
-        assert result['rating'] is None
-        assert result['url'] == 'https://example.com'

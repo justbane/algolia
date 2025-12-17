@@ -25,30 +25,3 @@ def parse_kafka_messages(kafka_file_path: str) -> Dict[str, Dict[str, Any]]:
             kafka_updates[message['objectID']] = message
     
     return kafka_updates
-
-
-def extract_kafka_only_fields(kafka_data: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Extract fields that typically only come from Kafka and not from XML catalog.
-    
-    Args:
-        kafka_data: Raw Kafka message data
-        
-    Returns:
-        Dictionary with Kafka-only enrichment fields
-    """
-    kafka_only_fields = [
-        'type',
-        'price_range',
-        'url',
-        'free_shipping',
-        'popularity',
-        'rating'
-    ]
-    
-    enrichment = {}
-    for field in kafka_only_fields:
-        if field in kafka_data:
-            enrichment[field] = kafka_data[field]
-    
-    return enrichment
