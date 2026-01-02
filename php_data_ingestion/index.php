@@ -160,40 +160,65 @@ class PHPAPIIngestion {
             // Respect rate limit
             $this->rateLimiter->wait();
             
-            try {
-                $batch = $this->fetchBatch($offset);
-                $batchCount = count($batch);
-                
-                if ($batchCount === 0) {
-                    echo "  - No more results\n";
+            // Per-page retry logic with exponential backoff
+            $maxRetries = 3;
+            $retryCount = 0;
+            $success = false;
+            
+            while ($retryCount <= $maxRetries) {
+                try {
+                    $batch = $this->fetchBatch($offset);
+                    $batchCount = count($batch);
+                    
+                    if ($batchCount === 0) {
+                        echo "  - No more results\n";
+                        $success = true;
+                        break 2; // Break outer while loop
+                    }
+                    
+                    $allProducts = array_merge($allProducts, $batch);
+                    $this->stats['products_fetched'] += $batchCount;
+                    
+                    echo "  - Retrieved $batchCount products (Total: {$this->stats['products_fetched']})\n";
+                    
+                    // If we got fewer than max, we've reached the end
+                    if ($batchCount < $this->config['max_results_per_request']) {
+                        echo "  - Received partial batch, end of data\n";
+                        $success = true;
+                        break 2; // Break outer while loop
+                    }
+                    
+                    // Success - exit retry loop
+                    $success = true;
                     break;
+                    
+                } catch (Exception $e) {
+                    $retryCount++;
+                    $this->stats['api_errors']++;
+                    
+                    echo "  - [ERROR] Failed to fetch page $page (attempt $retryCount/" . ($maxRetries + 1) . "): {$e->getMessage()}\n";
+                    
+                    if ($retryCount > $maxRetries) {
+                        throw new Exception("Failed to fetch page $page after " . ($maxRetries + 1) . " attempts");
+                    }
+                    
+                    // EXPONENTIAL BACKOFF: 2^retryCount seconds + random jitter
+                    $baseDelay = pow(2, $retryCount); // 2, 4, 8 seconds
+                    $jitter = (float)rand(0, 1000) / 1000.0; // 0-1 second random jitter
+                    $sleepTime = $baseDelay + $jitter;
+                    
+                    echo "  - Retrying in " . round($sleepTime, 2) . "s (exponential backoff)...\n";
+                    usleep((int)($sleepTime * 1000000));
                 }
-                
-                $allProducts = array_merge($allProducts, $batch);
-                $this->stats['products_fetched'] += $batchCount;
-                
-                echo "  - Retrieved $batchCount products (Total: {$this->stats['products_fetched']})\n";
-                
-                // If we got fewer than max, we've reached the end
-                if ($batchCount < $this->config['max_results_per_request']) {
-                    echo "  - Received partial batch, end of data\n";
-                    break;
-                }
-                
+            }
+            
+            // Move to next page if successful
+            if ($success) {
                 $offset += $this->config['max_results_per_request'];
                 $page++;
-                
-            } catch (Exception $e) {
-                $this->stats['api_errors']++;
-                echo "  - [ERROR] Failed to fetch page $page: {$e->getMessage()}\n";
-                
-                // Decide whether to retry or abort
-                if ($this->stats['api_errors'] >= 3) {
-                    throw new Exception("Too many API errors, aborting");
-                }
-                
-                echo "  - Retrying after error...\n";
-                sleep(2);
+            } else {
+                // This shouldn't happen, but just in case
+                break;
             }
         }
         
