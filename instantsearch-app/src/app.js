@@ -1,14 +1,15 @@
+import { ALGOLIA_APP_ID, ALGOLIA_API_KEY } from './algolia-config.js';
+
 const { algoliasearch, instantsearch } = window;
 
-const searchClient = algoliasearch(
-  'YFA7GQ7VGK',
-  '2b4ad902b9ec9bef3004caaa4b866eb5'
-);
+const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
 const search = instantsearch({
   indexName: 'products',
   searchClient,
   future: { preserveSharedStateOnUnmount: true },
+  routing: true,
+  urlSync: true,
 });
 
 search.addWidgets([
