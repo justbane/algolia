@@ -59,7 +59,7 @@ body {
   border-radius: 8px;
   border: none;
   font-size: 1rem;
-  padding: 0.625rem 1rem;
+  padding: 0.625rem 3rem;
 }
 
 /* ── Main two-column layout ────────────────────── */
@@ -107,6 +107,14 @@ body {
   letter-spacing: 0.08em;
   color: #666;
   margin-bottom: 0.75rem;
+}
+
+.sidebar .ranger {
+  width: 100%;
+  height: 30px;
+  background: #eee;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 /* ── Results ───────────────────────────────────── */

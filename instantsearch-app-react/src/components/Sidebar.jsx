@@ -21,12 +21,12 @@ export default function Sidebar() {
 
       <div className="sidebar__section">
         <h3 className="sidebar__heading">Category</h3>
-        <RefinementList attribute="categories" showMore />
+        <RefinementList attribute="categories" searchable showMore />
       </div>
 
       <div className="sidebar__section">
         <h3 className="sidebar__heading">Price Range</h3>
-        <RangeInput attribute="price" />
+        <RangeInput classNames={{ input: 'ranger' }} attribute="price" min={0} max={1000} />
       </div>
 
       <div className="sidebar__section">

@@ -20,6 +20,7 @@ export default function Results() {
               { label: 'Relevance', value: indexName },
               { label: 'Price: Low to High', value: `${indexName}_price_asc` },
               { label: 'Price: High to Low', value: `${indexName}_price_desc` },
+              { label: 'Rating: High to Low', value: `${indexName}_rating_desc` },
             ]}
           />
           <HitsPerPage
