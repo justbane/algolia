@@ -1,4 +1,4 @@
-import { SearchBox } from 'react-instantsearch'
+import SearchWithSuggestions from './SearchWithSuggestions'
 
 export default function Header() {
   return (
@@ -8,7 +8,7 @@ export default function Header() {
         <span className="header__logo-text">ElectroSearch</span>
       </div>
       <div className="header__search">
-        <SearchBox placeholder="Search electronics…" />
+        <SearchWithSuggestions />
       </div>
     </header>
   )

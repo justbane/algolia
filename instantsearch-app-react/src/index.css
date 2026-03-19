@@ -62,6 +62,35 @@ body {
   padding: 0.625rem 3rem;
 }
 
+/* ── Autocomplete (query suggestions) ──────────── */
+.header__search .aa-Autocomplete {
+  width: 100%;
+}
+
+.header__search .aa-Form {
+  border-radius: 8px;
+  border: none;
+  background: #fff;
+  box-shadow: none;
+}
+
+.header__search .aa-Input {
+  font-size: 1rem;
+  color: #1a1a2e;
+}
+
+.header__search .aa-Form:focus-within {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+  outline: none;
+}
+
+.aa-Panel {
+  z-index: 200;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin-top: 4px;
+}
+
 /* ── Main two-column layout ────────────────────── */
 .main-layout {
   display: grid;
