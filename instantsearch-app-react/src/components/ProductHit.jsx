@@ -1,4 +1,7 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Highlight } from 'react-instantsearch'
+import { useCart } from '../CartContext'
 
 function StarRating({ rating, maxRating = 5 }) {
   return (
@@ -12,40 +15,62 @@ function StarRating({ rating, maxRating = 5 }) {
   )
 }
 
-export default function ProductHit({ hit }) {
+export default function ProductHit({ hit, sendEvent }) {
+  const { addToCart } = useCart()
+  const [added, setAdded] = useState(false)
+
+  function handleAddToCart(e) {
+    e.preventDefault()
+    addToCart(hit)
+    sendEvent('conversion', hit, 'Added to Cart')
+    setAdded(true)
+    setTimeout(() => setAdded(false), 1500)
+  }
+
   return (
     <article className="product-hit">
-      <div className="product-hit__image-wrapper">
-        {hit.image ? (
-          <img
-            src={hit.image}
-            alt={hit.name}
-            className="product-hit__image"
-            loading="lazy"
-          />
-        ) : (
-          <div className="product-hit__image-placeholder">No image</div>
-        )}
-      </div>
-
-      <div className="product-hit__body">
-        <p className="product-hit__brand">{hit.brand}</p>
-        <h2 className="product-hit__name">
-          <Highlight attribute="name" hit={hit} />
-        </h2>
-
-        {hit.rating != null && (
-          <StarRating rating={hit.rating} />
-        )}
-
-        <div className="product-hit__footer">
-          <span className="product-hit__price">
-            ${Number(hit.price).toFixed(2)}
-          </span>
-          {hit.free_shipping && (
-            <span className="product-hit__badge">Free Shipping</span>
+      <Link to={`/product/${hit.objectID}`} className="product-hit__link">
+        <div className="product-hit__image-wrapper">
+          {hit.image ? (
+            <img
+              src={hit.image}
+              alt={hit.name}
+              className="product-hit__image"
+              loading="lazy"
+            />
+          ) : (
+            <div className="product-hit__image-placeholder">No image</div>
           )}
         </div>
+
+        <div className="product-hit__body">
+          <p className="product-hit__brand">{hit.brand}</p>
+          <h2 className="product-hit__name">
+            <Highlight attribute="name" hit={hit} />
+          </h2>
+
+          {hit.rating != null && (
+            <StarRating rating={hit.rating} />
+          )}
+
+          <div className="product-hit__footer">
+            <span className="product-hit__price">
+              ${Number(hit.price).toFixed(2)}
+            </span>
+            {hit.free_shipping && (
+              <span className="product-hit__badge">Free Shipping</span>
+            )}
+          </div>
+        </div>
+      </Link>
+
+      <div className="product-hit__actions">
+        <button
+          className={`btn-cart ${added ? 'btn-cart--added' : ''}`}
+          onClick={handleAddToCart}
+        >
+          {added ? 'Added!' : 'Add to Cart'}
+        </button>
       </div>
     </article>
   )
