@@ -15,6 +15,11 @@ export default function Sidebar() {
       </div>
 
       <div className="sidebar__section">
+        <h3 className="sidebar__heading">Collections</h3>
+        <RefinementList attribute="_collections" searchable showMore />
+      </div>
+
+      <div className="sidebar__section">
         <h3 className="sidebar__heading">Brand</h3>
         <RefinementList attribute="brand" searchable showMore />
       </div>

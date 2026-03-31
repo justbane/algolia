@@ -64,14 +64,14 @@ export default function ProductDetail() {
     return (
       <div className="detail-state">
         <p>{error}</p>
-        <Link to="/" className="detail__back">← Back to results</Link>
+        <a class="detail__back" onClick={() => window.history.back()}>← Back to results</a>
       </div>
     )
   }
 
   return (
     <div className="detail">
-      <Link to="/" className="detail__back">← Back to results</Link>
+      <a class="detail__back" onClick={() => window.history.back()}>← Back to results</a>
 
       <div className="detail__layout">
         <div className="detail__image-wrapper">
