@@ -22,7 +22,7 @@ export default function ProductHit({ hit, sendEvent }) {
   function handleAddToCart(e) {
     e.preventDefault()
     addToCart(hit)
-    sendEvent('conversion', hit, 'Added to Cart')
+    sendEvent('conversion', hit, 'Added to Cart', { eventSubtype: 'addToCart' })
     setAdded(true)
     setTimeout(() => setAdded(false), 1500)
   }

@@ -1,8 +1,38 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '../CartContext'
+import { aa, indexName } from '../algoliaClient'
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal } = useCart()
+  function handleCheckout() {
+    const withQuery = cart.filter(({ hit }) => hit.__queryID)
+    const withoutQuery = cart.filter(({ hit }) => !hit.__queryID)
+
+    const byQueryID = withQuery.reduce((acc, { hit }) => {
+      if (!acc[hit.__queryID]) acc[hit.__queryID] = []
+      acc[hit.__queryID].push(hit.objectID)
+      return acc
+    }, {})
+
+    Object.entries(byQueryID).forEach(([queryID, objectIDs]) => {
+      aa('convertedObjectIDsAfterSearch', {
+        eventName: 'Purchased',
+        eventSubtype: 'purchase',
+        index: indexName,
+        queryID,
+        objectIDs,
+      })
+    })
+
+    if (withoutQuery.length > 0) {
+      aa('convertedObjectIDs', {
+        eventName: 'Purchased',
+        eventSubtype: 'purchase',
+        index: indexName,
+        objectIDs: withoutQuery.map(({ hit }) => hit.objectID),
+      })
+    }
+  }
 
   if (cart.length === 0) {
     return (
@@ -80,7 +110,7 @@ export default function CartPage() {
         <p className="cart__total">
           Total: <strong>${cartTotal.toFixed(2)}</strong>
         </p>
-        <button className="btn-cart btn-cart--lg">Checkout</button>
+        <button className="btn-cart btn-cart--lg" onClick={handleCheckout}>Checkout</button>
       </div>
     </div>
   )

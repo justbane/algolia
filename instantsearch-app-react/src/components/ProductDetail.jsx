@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import client, { indexName } from '../algoliaClient'
+import client, { aa, indexName } from '../algoliaClient'
 import { useCart } from '../CartContext'
 
 function StarRating({ rating, maxRating = 5 }) {
@@ -41,13 +41,12 @@ export default function ProductDetail() {
 
   function handleAddToCart() {
     addToCart(product)
-    if (typeof window.aa === 'function') {
-      window.aa('convertedObjectIDs', {
-        eventName: 'Added to Cart',
-        index: indexName,
-        objectIDs: [product.objectID],
-      })
-    }
+    aa('convertedObjectIDs', {
+      eventName: 'Added to Cart',
+      eventSubtype: 'addToCart',
+      index: indexName,
+      objectIDs: [product.objectID],
+    })
     setAdded(true)
     setTimeout(() => setAdded(false), 1500)
   }
@@ -64,14 +63,14 @@ export default function ProductDetail() {
     return (
       <div className="detail-state">
         <p>{error}</p>
-        <a class="detail__back" onClick={() => window.history.back()}>← Back to results</a>
+        <a className="detail__back" onClick={() => window.history.back()}>← Back to results</a>
       </div>
     )
   }
 
   return (
     <div className="detail">
-      <a class="detail__back" onClick={() => window.history.back()}>← Back to results</a>
+      <a className="detail__back" onClick={() => window.history.back()}>← Back to results</a>
 
       <div className="detail__layout">
         <div className="detail__image-wrapper">
