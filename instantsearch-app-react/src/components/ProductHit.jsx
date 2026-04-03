@@ -29,7 +29,12 @@ export default function ProductHit({ hit, sendEvent }) {
 
   return (
     <article className="product-hit">
-      <Link to={`/product/${hit.objectID}`} className="product-hit__link">
+      <Link
+        to={`/product/${hit.objectID}`}
+        state={{ queryID: hit.__queryID, position: hit.__position }}
+        className="product-hit__link"
+        onClick={() => sendEvent('click', hit, 'Product Clicked')}
+      >
         <div className="product-hit__image-wrapper">
           {hit.image ? (
             <img

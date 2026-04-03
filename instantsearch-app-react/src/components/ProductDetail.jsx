@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useLocation } from 'react-router-dom'
 import client, { aa, indexName } from '../algoliaClient'
 import { useCart } from '../CartContext'
 
@@ -17,6 +17,8 @@ function StarRating({ rating, maxRating = 5 }) {
 
 export default function ProductDetail() {
   const { id } = useParams()
+  const location = useLocation()
+  const queryID = location.state?.queryID
   const { addToCart } = useCart()
   const [{ product, error, loadedId }, setFetchState] = useState({
     product: null,
@@ -41,12 +43,22 @@ export default function ProductDetail() {
 
   function handleAddToCart() {
     addToCart(product)
-    aa('convertedObjectIDs', {
-      eventName: 'Added to Cart',
-      eventSubtype: 'addToCart',
-      index: indexName,
-      objectIDs: [product.objectID],
-    })
+    if (queryID) {
+      aa('convertedObjectIDsAfterSearch', {
+        eventName: 'Added to Cart',
+        eventSubtype: 'addToCart',
+        index: indexName,
+        queryID,
+        objectIDs: [product.objectID],
+      })
+    } else {
+      aa('convertedObjectIDs', {
+        eventName: 'Added to Cart',
+        eventSubtype: 'addToCart',
+        index: indexName,
+        objectIDs: [product.objectID],
+      })
+    }
     setAdded(true)
     setTimeout(() => setAdded(false), 1500)
   }
