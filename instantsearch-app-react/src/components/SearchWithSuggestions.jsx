@@ -1,6 +1,7 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { autocomplete } from '@algolia/autocomplete-js'
 import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query-suggestions'
+import { createRedirectUrlPlugin } from '@algolia/autocomplete-plugin-redirect-url'
 import { useSearchBox } from 'react-instantsearch'
 import client from '../algoliaClient'
 
@@ -25,13 +26,24 @@ export default function SearchWithSuggestions() {
     []
   )
 
+  const redirectUrlPlugin = useMemo(
+    () =>
+      createRedirectUrlPlugin({
+        onRedirect(redirects) {
+          const url = redirects[0]?.data?.url
+          if (url) window.location.assign(url)
+        },
+      }),
+    []
+  )
+
   useEffect(() => {
     if (!containerRef.current) return
 
     const search = autocomplete({
       container: containerRef.current,
       placeholder: 'Search electronics…',
-      plugins: [suggestionsPlugin],
+      plugins: [suggestionsPlugin, redirectUrlPlugin],
       onStateChange({ state }) {
         refineRef.current(state.query)
       },
@@ -39,7 +51,7 @@ export default function SearchWithSuggestions() {
     })
 
     return () => search.destroy()
-  }, [suggestionsPlugin])
+  }, [suggestionsPlugin, redirectUrlPlugin])
 
   return <div ref={containerRef} />
 }

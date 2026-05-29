@@ -83,6 +83,20 @@ search.addWidgets([
     ],
   }),
 
+  instantsearch.widgets.trendingItems({
+    container: '#trendingItems',
+    facetName: 'brand',
+    facetValue: 'Apple',
+    templates: {
+      item(recommendation, { html }) {
+        return html`
+          <h2>${recommendation.name}</h2>
+          <p>${recommendation.description}</p>
+        `;
+      }
+    }
+  }),
+
   // Stats display
   instantsearch.widgets.stats({
     container: '#stats',
