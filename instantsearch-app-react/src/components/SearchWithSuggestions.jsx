@@ -30,7 +30,7 @@ export default function SearchWithSuggestions() {
     () =>
       createRedirectUrlPlugin({
         onRedirect(redirects) {
-          const url = redirects[0]?.data?.url
+          const url = redirects[0]?.urls?.[0]
           if (url) window.location.assign(url)
         },
       }),
