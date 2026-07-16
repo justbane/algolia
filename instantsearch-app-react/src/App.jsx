@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
-import { InstantSearch } from 'react-instantsearch'
+import { InstantSearch, Configure } from 'react-instantsearch'
 import client, { indexName } from './algoliaClient'
 import { stateMapping, parseSearchParams, serializeToSearch } from './routing'
 import Header from './components/Header'
@@ -101,6 +101,10 @@ function InstantSearchProvider({ children }) {
 
   return (
     <InstantSearch searchClient={client} indexName={indexName} insights routing={routing}>
+      <Configure
+        optionalFilters={['brand:Apple<score=3>', 'brand:Samsung<score=2>', 'brand:-Huawei']}
+        hitsPerPage={50}
+      />
       {children}
     </InstantSearch>
   )
