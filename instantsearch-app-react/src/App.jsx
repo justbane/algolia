@@ -101,8 +101,11 @@ function InstantSearchProvider({ children }) {
 
   return (
     <InstantSearch searchClient={client} indexName={indexName} insights routing={routing}>
-      <Configure
+      {/* <Configure
         optionalFilters={['brand:Apple<score=3>', 'brand:Samsung<score=2>', 'brand:-Huawei']}
+        hitsPerPage={50}
+      /> */}
+      <Configure
         hitsPerPage={50}
       />
       {children}
