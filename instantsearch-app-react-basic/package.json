@@ -1,0 +1,25 @@
+{
+  "name": "instantsearch-app-react-basic",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@algolia/autocomplete-js": "^1.19.7",
+    "@algolia/autocomplete-plugin-query-suggestions": "^1.19.7",
+    "@algolia/autocomplete-theme-classic": "^1.19.7",
+    "algoliasearch": "^5.49.2",
+    "instantsearch.css": "^8.12.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-instantsearch": "^7.28.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.0",
+    "vite": "^8.0.0"
+  }
+}
