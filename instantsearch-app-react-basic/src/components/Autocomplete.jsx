@@ -11,7 +11,12 @@ import { usePagination, useSearchBox } from 'react-instantsearch'
 import { autocomplete, getAlgoliaResults } from '@algolia/autocomplete-js'
 import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query-suggestions'
 
-import { searchClient, indexName, suggestionsIndexName } from '../searchClient'
+import {
+  searchClient,
+  indexName,
+  suggestionsIndexName,
+  docsSuggestionsIndexName,
+} from '../searchClient'
 
 // This is the standard Algolia recipe for wiring the standalone Autocomplete
 // dropdown (query suggestions + product hits) to a React InstantSearch page:
@@ -82,6 +87,9 @@ export function Autocomplete(props) {
           return []
         }
 
+        // Federated search: each source below queries a different index and
+        // renders under its own header, so one dropdown surfaces results
+        // from both the "products" and "documents_crawling" indices.
         return [
           {
             sourceId: 'products',
@@ -123,6 +131,49 @@ export function Autocomplete(props) {
                         <div className="aa-ItemContentDescription">
                           {item.brand} &middot; ${item.price}
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              },
+            },
+          },
+          {
+            sourceId: 'documents',
+            getItems() {
+              return getAlgoliaResults({
+                searchClient,
+                queries: [
+                  {
+                    indexName: docsSuggestionsIndexName,
+                    query,
+                    params: { hitsPerPage: 5 },
+                  },
+                ],
+              })
+            },
+            onSelect({ item }) {
+              if (item.url) {
+                window.open(item.url, '_blank', 'noopener,noreferrer')
+              } else {
+                setAutocompleteQuery(item.title ?? query)
+              }
+            },
+            templates: {
+              header() {
+                return <span className="aa-SourceHeaderTitle">Documents</span>
+              },
+              item({ item }) {
+                const title = item.title || item.name || item.url
+                return (
+                  <div className="aa-ItemWrapper">
+                    <div className="aa-ItemContent">
+                      <div className="aa-ItemIcon aa-ItemIcon--doc">📄</div>
+                      <div className="aa-ItemContentBody">
+                        <div className="aa-ItemContentTitle">{title}</div>
+                        {item.url && (
+                          <div className="aa-ItemContentDescription">{item.url}</div>
+                        )}
                       </div>
                     </div>
                   </div>

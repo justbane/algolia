@@ -17,6 +17,7 @@ export default function App() {
     <InstantSearch
       searchClient={searchClient}
       indexName={indexName}
+      insights
       future={{ preserveSharedStateOnUnmount: true }}
     >
       {/* Controls the number of results per page for the main product grid. */}

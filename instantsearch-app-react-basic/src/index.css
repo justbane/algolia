@@ -40,6 +40,14 @@ body {
   object-fit: contain;
 }
 
+/* Document results (federated from the documents_crawling index) get a plain icon instead of a thumbnail. */
+.aa-ItemIcon--doc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
 /* ---- Layout ------------------------------------------------------------- */
 
 .layout {
@@ -135,6 +143,32 @@ body {
 .product__price {
   font-weight: 700;
   color: var(--accent);
+}
+
+.product__cart-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.product__cart-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.product__cart-btn--added {
+  background: #2fb380;
+  border-color: #2fb380;
+  color: #fff;
 }
 
 .results__pagination {
