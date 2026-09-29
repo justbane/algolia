@@ -36,6 +36,15 @@ search.addWidgets([
     ],
   }),
 
+  // Categories list
+  instantsearch.widgets.refinementList({
+    container: '#categories',
+    attribute: 'categories',
+    showMore: true,
+    limit: 10,
+    showMoreLimit: 50,
+  }),
+
   // Brand refinement list
   instantsearch.widgets.refinementList({
     container: '#brand-list',
@@ -78,6 +87,7 @@ search.addWidgets([
     items: [
       { label: 'Relevance', value: 'products' },
       { label: 'Price: Low to High', value: 'products_price_asc' },
+      { label: 'Price: Low to High (Hard Sort)', value: 'products_price_asc_hardsort' },
       { label: 'Price: High to Low', value: 'products_price_desc' },
       { label: 'Rating: High to Low', value: 'products_rating_desc' },
     ],

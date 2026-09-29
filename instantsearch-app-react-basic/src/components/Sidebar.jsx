@@ -1,6 +1,7 @@
 import {
   ClearRefinements,
   RefinementList,
+  Menu,
   RangeInput,
   ToggleRefinement,
 } from 'react-instantsearch'
@@ -8,6 +9,7 @@ import {
 // Facets shown in the left sidebar. Each `attribute` must be declared as an
 // "attribute for faceting" in the Algolia dashboard (Configuration > Facets).
 export function Sidebar() {
+
   return (
     <aside className="sidebar">
       <div className="sidebar__section">
@@ -16,7 +18,7 @@ export function Sidebar() {
 
       <div className="sidebar__section">
         <h3 className="sidebar__heading">Category</h3>
-        <RefinementList attribute="categories" searchable showMore limit={6} />
+        <Menu attribute="categories" limit={6} />
       </div>
 
       <div className="sidebar__section">

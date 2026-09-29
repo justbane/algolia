@@ -458,6 +458,20 @@ body {
   gap: 1rem;
 }
 
+/* ── Related products panel ───────────────────── */
+.related-products {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.related-products .ais-RelatedProducts-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 1rem;
+}
+
 /* ── Cart page ─────────────────────────────────── */
 .cart {
   padding: 1.5rem 2rem;

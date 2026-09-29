@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link, useLocation } from 'react-router-dom'
+import { RelatedProducts } from 'react-instantsearch'
 import client, { aa, indexName } from '../algoliaClient'
 import { useCart } from '../CartContext'
+import ProductHit from './ProductHit'
 
 function StarRating({ rating, maxRating = 5 }) {
   return (
@@ -121,6 +123,16 @@ export default function ProductDetail() {
           </button>
         </div>
       </div>
+
+      <RelatedProducts
+        objectIDs={[product.objectID]}
+        limit={4}
+        queryParameters={{ ruleContexts: ['cool_product'] }}
+        itemComponent={({ item, sendEvent }) => (
+          <ProductHit hit={item} sendEvent={sendEvent} />
+        )}
+        classNames={{ root: 'related-products', list: 'product-grid' }}
+      />
     </div>
   )
 }
