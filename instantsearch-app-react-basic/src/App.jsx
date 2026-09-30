@@ -7,7 +7,7 @@ import {
   CurrentRefinements,
 } from 'react-instantsearch'
 
-import { searchClient, indexName } from './searchClient'
+import { searchClient, indexName, aa, userToken } from './searchClient'
 import { Autocomplete } from './components/Autocomplete'
 import { Sidebar } from './components/Sidebar'
 import { ProductHit } from './components/ProductHit'
@@ -17,11 +17,12 @@ export default function App() {
     <InstantSearch
       searchClient={searchClient}
       indexName={indexName}
-      insights
+      // Reuse our initialized search-insights client so events carry the same userToken.
+      insights={{ insightsClient: aa }}
       future={{ preserveSharedStateOnUnmount: true }}
     >
-      {/* Controls the number of results per page for the main product grid. */}
-      <Configure hitsPerPage={12} />
+      {/* Results per page for the main product grid, plus the userToken sent with each search. */}
+      <Configure hitsPerPage={12} userToken={userToken} />
 
       <header className="header">
         <h1 className="header__title">Algolia &middot; React InstantSearch</h1>

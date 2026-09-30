@@ -16,6 +16,7 @@ import {
   indexName,
   suggestionsIndexName,
   docsSuggestionsIndexName,
+  userToken,
 } from '../searchClient'
 
 // This is the standard Algolia recipe for wiring the standalone Autocomplete
@@ -44,7 +45,7 @@ export function Autocomplete(props) {
       searchClient,
       indexName: suggestionsIndexName,
       getSearchParams() {
-        return { hitsPerPage: 5 }
+        return { hitsPerPage: 5, userToken }
       },
       transformSource({ source }) {
         return {
@@ -100,7 +101,7 @@ export function Autocomplete(props) {
                   {
                     indexName,
                     query,
-                    params: { hitsPerPage: 5 },
+                    params: { hitsPerPage: 5, userToken },
                   },
                 ],
               })
@@ -147,7 +148,7 @@ export function Autocomplete(props) {
                   {
                     indexName: docsSuggestionsIndexName,
                     query,
-                    params: { hitsPerPage: 5 },
+                    params: { hitsPerPage: 5, userToken },
                   },
                 ],
               })
